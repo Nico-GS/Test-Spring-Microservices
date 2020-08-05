@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Repository
 public class ProductDaoImpl implements ProductDao{
 
@@ -25,11 +26,18 @@ public class ProductDaoImpl implements ProductDao{
 
     @Override
     public Product findById (int id) {
-        return products.get (id);
+        for (Product product : products) {
+            if (product.getId () == id) {
+                return product;
+            }
+        }
+        return null;
     }
+
 
     @Override
     public Product save (Product product) {
-        return null;
+        products.add(product);
+        return product;
     }
 }

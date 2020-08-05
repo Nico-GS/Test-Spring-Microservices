@@ -1,6 +1,6 @@
 package com.ecommerce.microcommerce.model;
 
-// AUSSI APPELÉ BEAN OU JAVABEAN
+// AUSSI APPELÉE BEAN OU JAVABEAN
 
 public class Product {
 
@@ -8,6 +8,9 @@ public class Product {
     private String nom;
     private int prix;
     private int dureeDeVie;
+
+    public Product() {
+    }
 
     public Product (int id, String nom, int prix, int dureeDeVie) {
         this.id = id;
@@ -57,4 +60,5 @@ public class Product {
                 ", dureeDeVie=" + dureeDeVie +
                 '}';
     }
+
 }
