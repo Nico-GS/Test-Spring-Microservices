@@ -23,7 +23,7 @@ public class ProductController {
     @GetMapping(value = "Produits/{id}")
     public Product afficherUnProduit(@PathVariable int id){
 
-        Product product = new Product (id, new String ("aspirateur"), 100);
+        Product product = new Product (id, new String ("aspirateur"), 100, 10);
         return product;
 
     }
