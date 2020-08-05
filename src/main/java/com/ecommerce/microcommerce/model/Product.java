@@ -54,6 +54,7 @@ public class Product {
                 "id=" + id +
                 ", nom='" + nom + '\'' +
                 ", prix=" + prix +
+                ", dureeDeVie=" + dureeDeVie +
                 '}';
     }
 }

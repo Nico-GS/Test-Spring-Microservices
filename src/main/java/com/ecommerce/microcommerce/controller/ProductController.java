@@ -13,19 +13,30 @@ public class ProductController {
     @Autowired
     private ProductDao productDao;
 
+//    // Récupère la liste des produits
+//    @RequestMapping(value = "/Produits", method = RequestMethod.GET)
+//    public List<Product> listProduits() {
+//        return productDao.findAll ();
+//    }
+//
+//    // Récupère un produit par son ID
+//    @GetMapping(value = "/Produits/{id}")
+//    public Product afficherUnProduit (@PathVariable int id) {
+//        return productDao.findById (id);
+//    }
+
     // Produits
     @GetMapping(value = "Produits")
     public List<Product> listeProduits() {
         return productDao.findAll ();
     }
 
-    // Produits/{id}
-    @GetMapping(value = "Produits/{id}")
-    public Product afficherUnProduit(@PathVariable int id){
-
-        Product product = new Product (id, new String ("aspirateur"), 100, 10);
-        return product;
-
+    // Récupère un produit par son ID
+    @GetMapping(value = "/Produits/{id}")
+    public Product afficherUnProduit (@PathVariable int id) {
+        return productDao.findById (id);
     }
+
+
     
 }

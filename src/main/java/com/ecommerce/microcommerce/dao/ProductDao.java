@@ -7,7 +7,7 @@ import java.util.List;
 public interface ProductDao {
 
     // Liste des opérations disponibles
-    public List<Product> findAll();
-    public Product findById(int id);
-    public Product save(Product product);
+     List<Product> findAll();
+     Product findById(int id);
+     Product save(Product product);
 }
