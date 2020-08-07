@@ -2,58 +2,63 @@ package com.ecommerce.microcommerce.controller;
 
 import com.ecommerce.microcommerce.dao.ProductDao;
 import com.ecommerce.microcommerce.model.Product;
+import com.fasterxml.jackson.databind.ser.FilterProvider;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 @RestController
 public class ProductController {
 
-    Logger logger;
+    private Logger logger;
 
     @Autowired
     private ProductDao productDao;
 
-//    // Récupère la liste des produits
-//    @RequestMapping(value = "/Produits", method = RequestMethod.GET)
-//    public List<Product> listProduits() {
-//        return productDao.findAll ();
-//    }
-//
-//    // Récupère un produit par son ID
-//    @GetMapping(value = "/Produits/{id}")
-//    public Product afficherUnProduit (@PathVariable int id) {
-//        return productDao.findById (id);
-//    }
-
     // Produits
-    @GetMapping(value = "/Produits")
-    public List<Product> listeProduits() {
-        return productDao.findAll ();
+    @RequestMapping(value = "/Produits", method = RequestMethod.GET)
+    public MappingJacksonValue listeProduits() {
+        Iterable<Product> produits = productDao.findAll ();
+
+        SimpleBeanPropertyFilter monFiltre = SimpleBeanPropertyFilter.serializeAllExcept ("prixAchat");
+
+        FilterProvider listDeNosFiltres = new SimpleFilterProvider()
+                .addFilter("monFiltreDynamique", monFiltre);
+
+        MappingJacksonValue produitsFiltres = new MappingJacksonValue(produits);
+        produitsFiltres.setFilters(listDeNosFiltres);
+        return produitsFiltres;
     }
 
     // Récupère un produit par son ID
-    @GetMapping(value = "/Produits/{id}")
-    public Product afficherUnProduit (@PathVariable int id) {
-        return productDao.findById (id);
-    }
+//    @GetMapping(value = "/Produits/{id}")
+//    public Product afficherUnProduit(@PathVariable int id) {
+//        return productDao.findById (id);
+//    }
+//
+//    @PostMapping(value = "/Produits")
+//    public ResponseEntity<Void> ajouterProduit(@RequestBody Product product) {
+//
+//        Product product1 = productDao.save(product);
+//
+//        if (product == null) {
+//            return ResponseEntity.noContent ().build ();
+//        }
+//
+//        URI location = ServletUriComponentsBuilder.fromCurrentRequest ().path ("/{id}")
+//                .buildAndExpand (product1.getId ()).toUri ();
+//        return ResponseEntity.created (location).build ();
+//    }
 
-    @PostMapping(value = "/Produits/")
-    public void ajouterProduit(@RequestBody Product product, HttpServletRequest request) {
-        productDao.save (product);
-    }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public void handle(HttpMessageNotReadableException e) {
-        logger.warn ("Returning HTTP 400 Bad Request", e);
+    public void handle(final HttpMessageNotReadableException e) {
+        logger.warn("Returning HTTP 400 Bad Request", e);
     }
-
-
-    
 }

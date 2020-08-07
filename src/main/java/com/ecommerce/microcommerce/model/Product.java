@@ -2,21 +2,34 @@ package com.ecommerce.microcommerce.model;
 
 // AUSSI APPELÉE BEAN OU JAVABEAN
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+@JsonIgnoreProperties(value = {"prixAchat"})
+@Entity
 public class Product {
 
+    @Id
+    @GeneratedValue
     private int id;
     private String nom;
     private int prix;
-    private int dureeDeVie;
+    // A ne pas afficher
+    @JsonIgnore
+    private int prixAchat;
 
     public Product() {
     }
 
-    public Product (int id, String nom, int prix, int dureeDeVie) {
+    public Product (int id, String nom, int prix, int prixAchat) {
         this.id = id;
         this.nom = nom;
         this.prix = prix;
-        this.dureeDeVie = dureeDeVie;
+        this.prixAchat = prixAchat;
     }
 
     public int getId () {
@@ -43,12 +56,12 @@ public class Product {
         this.prix = prix;
     }
 
-    public int getDureeDeVie () {
-        return dureeDeVie;
+    public int getPrixAchat () {
+        return prixAchat;
     }
 
-    public void setDureeDeVie (int dureeDeVie) {
-        this.dureeDeVie = dureeDeVie;
+    public void setPrixAchat (int prixAchat) {
+        this.prixAchat = prixAchat;
     }
 
     @Override
@@ -57,8 +70,7 @@ public class Product {
                 "id=" + id +
                 ", nom='" + nom + '\'' +
                 ", prix=" + prix +
-                ", dureeDeVie=" + dureeDeVie +
+                ", prixAchat=" + prixAchat +
                 '}';
     }
-
 }
